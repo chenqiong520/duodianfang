@@ -182,7 +182,7 @@
             <div class="tipTitle">百房头条</div>
             <el-carousel :interval="2000" trigger="click" height="320px">
               <el-carousel-item v-for="item in 4" :key="item">
-                <h3>{{ item }}</h3>
+                <img src="@/assets/item.jpg">
               </el-carousel-item>
             </el-carousel>
           </el-col>
@@ -200,24 +200,67 @@
         </el-row>
       </div>
       <div class="warp">
-        <el-row>
-          <el-col :span="24">
+        <el-row :gutter="24">
+          <el-col :span="16">
             <div class="tipTitle">百房热盘</div>
             <div v-swiper:mySwiper="swiperOption" class="swiper" height="360px">
               <div class="swiper-wrapper">
-                <div v-for="item in 4" :key="item" class="swiper-slide hot-house-item">
-                  <img class="hot-house-img" src="@/assets/item.jpg">
-                  <div class="h-name"> 恒大文化旅游城 </div>
-                  <div class="h-desc"> 均价45346元/m 户型80-150平 </div>
-                  <div class="h_info">
-                    <span class="info_text">春暖花开礼献长沙</span>
-                    <span class="sign_num">56已报名</span>
+                <div v-for="item in 4" :key="item" class="swiper-slide">
+                  <div class=" hot-house-item">
+                    <img class="hot-house-img" src="@/assets/item.jpg">
+                    <div class="h-name"> 恒大文化旅游城 </div>
+                    <div class="h-desc"> 均价45346元/m 户型80-150平 </div>
+                    <div class="h_info">
+                      <span class="info_text">春暖花开礼献长沙</span>
+                      <span class="sign_num">56已报名</span>
+                    </div>
                   </div>
                 </div>
               </div>
               <div class="swiper-button-next"></div>
               <div class="swiper-button-prev"></div>
             </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="tipTitle">特色楼盘</div>
+            <div>
+              <img src="@/assets/item.jpg">
+              <div>戛纳湾在售不限产品</div>
+            </div>
+            <div>
+              <img src="@/assets/item.jpg">
+              <div>戛纳湾在售不限产品</div>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+      <div class="warp">
+        <el-row :gutter="24">
+          <el-col :span="16">
+            <div class="tipTitle">百房导购</div>
+            <div class="flex-layout">
+              <div class="">
+                <img src="@/assets/item.jpg">
+              </div>
+              <div class="flex-layout right-layout">
+                <div class="">
+                  <img src="@/assets/item.jpg">
+                </div>
+                <div class="">
+                  <img src="@/assets/item.jpg">
+                </div>
+                <div class="">
+                  <img src="@/assets/item.jpg">
+                </div>
+                <div class="">
+                  <img src="@/assets/item.jpg">
+                </div>
+              </div>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="tipTitle">新房动态</div>
+            <div>春暖花开礼献长沙</div>
           </el-col>
         </el-row>
       </div>
@@ -423,25 +466,36 @@ export default {
 .newsContent {
   height: 320px;
 }
+// 热盘
 .hot-house-item {
   border: 1px solid $border-color-base;
   padding: 20px;
   .hot-house-img {
-    width: 382px;
-    height: 260px;
+    width: 100%;
+    height: 220px;
   }
   .h-name {
-    font-size: 16px;
+    font-size: 14px;
     color: #333;
     margin: 10px 0;
   }
   .h-desc {
-    font-size: 14px;
+    font-size: 12px;
     color: #999;
     margin-bottom: 10px;
   }
   .info_text {
     color: $main-color;
+  }
+  .sign_num {
+    float: right;
+    font-size: 12px;
+  }
+}
+.flex-layout {
+  display: flex;
+  &.right-layout {
+    flex-wrap: wrap;
   }
 }
 </style>
