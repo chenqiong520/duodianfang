@@ -49,7 +49,7 @@
         </el-col>
         <el-col :span="22">
           <div>
-            <span class="item-list"  @click="hxSelect('all','all')" :class="['all'==onlyIndex?'mypint':'']">全部</span>
+            <span class="item-list"  @click="hxSelect('all',{aaa101: null})" :class="['all'==onlyIndex?'mypint':'']">全部</span>
             <span  class="item-list"v-if ="metadata.HX" v-for="(i,k) in metadata.HX" :key="k" @click="hxSelect(i,k)" :class="[k==onlyIndex?'mypint':'']">{{i.aaa103}}</span>
           </div>
         </el-col>
@@ -59,9 +59,10 @@
           面积
         </el-col>
         <el-col :span="22">
-         <!-- <div>
-            <span class="item-list" v-for="(i,k) in mylist" :key="k" @click="onleySelect(i,k)" :class="[k==onlyIndex?'mypint':'']">{{i.label}}</span>
-          </div>-->
+          <div>
+            <span class="item-list"  @click="mjSelect('all',{mjminvalue: null, mjmaxvalue:null})" :class="['all'==onlyIndex?'mypint':'']">全部</span>
+            <span class="item-list" v-for="(i,k) in mjList" :key="k" @click="mjSelect(i,k)" :class="[k==mjIndex?'mypint':'']">{{i.mj}}</span>
+          </div>
         </el-col>
       </el-row>
       <el-row :gutter="24" class="itemDiv">
@@ -71,9 +72,9 @@
         <el-col :span="22">
           <el-row :gutter="24">
             <el-col :span="3">
-              <el-select size="mini" v-model="conditions.JCNT"  placeholder="建造年代" @change="mychange">
+              <el-select size="mini" clearable  v-model="conditions.xszt"  placeholder="销售状态" @change="mychange" @clear="clearSelect('xszt')">
                 <el-option
-                  v-for="item in metadata.JCNT"
+                  v-for="item in metadata.XSZT"
                   :key="item.aaa101"
                   :label="item.aaa103"
                   :value="item.aaa101">
@@ -81,35 +82,26 @@
               </el-select>
             </el-col>
             <el-col :span="3">
-              <el-select size="mini" v-model="conditions.JZLX" placeholder="房屋类型" @change="mychange">
+              <el-select size="mini" clearable v-model="conditions.wylx" placeholder="物业类型" @change="mychange" @clear="clearSelect('wylx')">
                 <el-option
-                  v-for="item in metadata.JZLX"
+                  v-for="item in metadata.WYLX"
                   :key="item.aaa101"
                   :label="item.aaa103"
                   :value="item.aaa101">
                 </el-option>
               </el-select>
             </el-col>
-            <el-col :span="3">
-              <el-select size="mini" v-model="conditions.LC" placeholder="楼层" @change="mychange">
-                <el-option
-                  v-for="item in metadata.LC"
-                  :key="item.aaa101"
-                  :label="item.aaa103"
-                  :value="item.aaa101">
-                </el-option>
-              </el-select>
-            </el-col><el-col :span="3">
-            <el-select size="mini" v-model="conditions.FWCX" placeholder="朝向" @change="mychange">
+           <el-col :span="3">
+            <el-select size="mini" clearable  v-model="conditions.kpsj" placeholder="开盘时间" @change="mychange" @clear="clearSelect('wylx')">
               <el-option
-                v-for="item in metadata.FWCX"
+                v-for="item in metadata.KPSJ"
                 :key="item.aaa101"
                 :label="item.aaa103"
                 :value="item.aaa101">
               </el-option>
             </el-select>
           </el-col><el-col :span="3">
-            <el-select size="mini" v-model="conditions.ZXZK" placeholder="装修" @change="mychange">
+            <el-select size="mini" clearable v-model="conditions.zxzt" placeholder="装修状态" @change="mychange" @clear="clearSelect('wylx')">
               <el-option
                 v-for="item in metadata.ZXZK"
                 :key="item.aaa101"
@@ -137,31 +129,34 @@
           selectIndexarea:0,
           selectIndexline:0,
           onlyIndex:'all',
+          mjIndex: 'all',
           valueArray:[],
           allvalue:['','','','',''],
           areaList: JSON.parse(window.localStorage.getItem('areaList'))  || [],
           lineList: [],
           averagePriceList: JSON.parse(window.localStorage.getItem('averagePriceList')) || [],
           totalPriceList: JSON.parse(window.localStorage.getItem('totalPriceList')) || [],
+          mjList: JSON.parse(window.localStorage.getItem('mjList')) || [],
           conditions: {
-            area: '',
-            dj: {},
-            zj: {},
-            hx: '',
-            mj: '',
-            JCNT: '',
-            JZLX: '',
-            LC: '',
-            FWCX: '',
-            ZXZK: ''
+            ctqybm: null,
+            zjminvalue: null,
+            zjmaxvalue: null,
+            djminvaue: null,
+            djmaxvalue: null,
+            mjminvalue:null,//面积最小值
+            mjmaxvalue:null,//面积最大值
+            hx: null,
+            xszt: null, //销售状态
+            wylx: null, //物业类型
+            kpsj: null, //开盘时间
+            zxzk: null //装修状态
 
           },
           metadata: {
             HX: [],
-            JCNT: [], //年代
-            JZLX: [], //类型
-            LC: [], // 楼层
-            FWCX: [],//朝向
+            XSZT: [], //销售状态
+            WYLX: [], //类型
+            KPSJ: [],//开盘时间
             ZXZK: [] // 装修
 
           }
@@ -188,9 +183,10 @@
       // 选择区域
       selectValuearea(i,k){
         this.selectIndexarea= k
-        this.conditions.area = i.ctqybm
+        this.conditions.ctqybm = i.ctqybm
         this.$emit('selectConditions',this.conditions)
       },
+      //选择街道
       selectValueline(i,k){
         this.selectIndexline= k
         this.$emit('selectConditions',this.conditions)
@@ -198,24 +194,38 @@
       // 选择单价
       selectAveragePriceValue(i,k) {
         this.selectIndexAverage = k
-        this.conditions.dj.djminvaue = i.djminvaue
-        this.conditions.dj.djmaxvalue = i.djmaxvalue
+        this.conditions.djminvaue = i.djminvaue
+        this.conditions.djmaxvalue = i.djmaxvalue
         this.$emit('selectConditions',this.conditions)
       },
       // 选择总价
       selectTotalPriceValue(i,k) {
         this.selectIndexTotal= k
-        this.conditions.zj.zjminvalue = i.zjminvalue
-        this.conditions.zj.zjmaxvalue = i.zjmaxvalue
+        this.conditions.zjminvalue = i.zjminvalue
+        this.conditions.zjmaxvalue = i.zjmaxvalue
         this.$emit('selectConditions',this.conditions)
       },
+
+      mjSelect(i,k) {
+        this.mjIndex= k
+        this.conditions.mjminvalue = i.mjminvalue
+        this.conditions.mjmaxvalue = i.mjmaxvalue
+        this.$emit('selectConditions',this.conditions)
+      },
+      //选择户型
       hxSelect(i,k){
         this.onlyIndex= k
         this.conditions.hx = i.aaa101
         this.$emit('selectConditions',this.conditions)
       },
       mychange(i){
-      /*  this.conditions[i.aaa100] = i.aaa101*/
+        if(i) {
+          this.$emit('selectConditions',this.conditions)
+        }
+
+      },
+      clearSelect(name) {
+        this.conditions[name] = null
         this.$emit('selectConditions',this.conditions)
       }
     }

@@ -2,11 +2,7 @@
   <div class="main">
     <div class="searchWarp">
       <el-card class="box-card">
-        <my-select typeAll='1' title="位置" :areaList="areaList" :lineList="lineList" @chidrenFnOne="selectValuearea" @chidrenFnTwo="selectValueline"></my-select>
-        <my-select typeAll='1' title="价格" :areaList="OnlypriceList" :lineList="allpriceList" @chidrenFnOne="selectValueonly" @chidrenFnTwo="selectValueall"></my-select>
-        <my-select typeAll='2' title="户型" :mylist="typeArea" @chidrenFnthree="typeAreaselect" ></my-select>
-        <my-select typeAll='2' title="面积" :mylist="mainjiArea" @chidrenFnthree="typeAreaselect" ></my-select>
-        <my-select typeAll='3' title="更多" :shuomingArray="shuomingArray" :optionsArray="optionsList" @chidrenFnfour="getSelectValue"></my-select>
+        <my-select  @selectConditions="selectConditions"></my-select>
       </el-card>
     </div>
     <div class="contWarp">
@@ -55,11 +51,11 @@
           </div>
           <div class="more">更多<i class="el-icon-d-arrow-right"></i></div>
         </div>
-        
+
         <new-img wordOrimg='1' :newimgList="imgList"></new-img>
       </div>
     </div>
-   
+
   </div>
 </template>
 <script>
@@ -107,7 +103,7 @@ export default {
         {label:'7号线',value:'6'},
         {label:'9号线',value:'7'},
         {label:'11号线',value:'8'}
-              
+
        ],
        OnlypriceList:[
         {label:'全部',value:'1'},
@@ -246,7 +242,7 @@ export default {
           pageNo: 1,
           pageSize: 5
         },
-      
+
       }
     },
     mounted(){
@@ -283,7 +279,7 @@ export default {
       handhleCaret(i){
         this.myCaret = i
         if(i==1){
-          this.allList =JSON.parse(window.sessionStorage.getItem('warpList')) 
+          this.allList =JSON.parse(window.sessionStorage.getItem('warpList'))
         }else if(i==2){
           function sortNumber(a,b){
             return a.price - b.price
@@ -386,7 +382,7 @@ export default {
 }
 .allmx{
   float: left;
-  
+
 }
 .allmx>span{
   color: red;

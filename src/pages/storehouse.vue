@@ -2,11 +2,7 @@
   <div class="main">
     <div class="searchWarp">
       <el-card class="box-card">
-        <my-select typeAll='1' title="位置" label1="区域找房"  label2="位置找房" :areaList="areaList" :lineList="lineList" @chidrenFnOne="selectValuearea" @chidrenFnTwo="selectValueline"></my-select>
-        <my-select typeAll='1' title="价格" label1="单价" label2="总价" :areaList="OnlypriceList" :lineList="allpriceList" @chidrenFnOne="selectValueonly" @chidrenFnTwo="selectValueall"></my-select>
-        <my-select typeAll='2' title="户型" :mylist="typeArea" @chidrenFnthree="typeAreaselect" ></my-select>
-        <my-select typeAll='2' title="面积" :mylist="mainjiArea" @chidrenFnthree="typeAreaselect" ></my-select>
-        <my-select typeAll='3' title="更多" :shuomingArray="shuomingArray" :optionsArray="optionsList" @chidrenFnfour="getSelectValue"></my-select>
+        <my-select  @selectConditions="selectConditions"></my-select>
       </el-card>
     </div>
     <div class="contWarp">

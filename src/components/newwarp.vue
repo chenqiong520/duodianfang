@@ -3,7 +3,7 @@
     <div class="itemWarp" v-for="(i,k) in warpList" :key="k">
       <el-row :gutter="24">
         <el-col :span="6">
-          <img :src="i.url" alt="item" width="100%">
+          <img src="@/assets/item.jpg" alt="item" width="100%">
         </el-col>
         <el-col :span="18">
           <p class="itemName">{{i.lpname}}</p>
@@ -17,7 +17,7 @@
           </div>
           <div class="address">
             <span class="itemAddress">
-              户型：{{i.type}} | 建筑面积：{{i.zdmj}}
+              户型：{{i.hx}}室  | 建筑面积：{{i.zdmj}}
             </span>
           </div>
           <div class="address">
@@ -65,7 +65,7 @@
   margin-top: 8px;
   color:#999;
   /* text-align: left; */
-  
+
 }
 .itemAddress{
   /* float: left; */

@@ -82,12 +82,12 @@ export default {
       totalPriiceList: []
     }
   },
-  create() {
-
+  created() {
+    this.getZdData()
   },
    mounted(){
      this.getCity()
-     this.getZdData()
+
      this.getCityArea()
      this.getCityTotalPrice()
      this.getCityAverage()
@@ -172,7 +172,19 @@ export default {
 
       })
     },
+    //根据城市id获取面积
+    getCityTotalPrice() {
+      let params = this.api.getParam('mj1', {ctid: this.ctid})
+      this.api.postData(this, params).then((res) => {
+        if (res.code === 0) {
+          window.localStorage.setItem('mjList',  JSON.stringify(res.data))
+        } else {
 
+        }
+      }).catch((code) => {
+
+      })
+    },
   }
 }
 </script>
