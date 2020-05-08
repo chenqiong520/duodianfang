@@ -36,6 +36,14 @@
         </el-row>
       </div>
     </header>
+      <!--意见反馈-->
+    <div class="suggest-wrapper">
+      <div class="suggest" @click="suggestVisible = true">
+        <i class="el-icon-chat-square"></i>
+        <div >意见反馈</div>
+      </div>
+    </div>
+    <suggest :suggestVisible="suggestVisible" @close="close"></suggest>
     <!-- 页面内容区域展示 -->
     <div class="contentdown">
       <router-view :ctid="ctid" />
@@ -45,8 +53,10 @@
 </template>
 
 <script>
+  import Suggest from '@/components/suggest'
 export default {
   name: 'App',
+  components: {Suggest},
   data() {
     return {
       heanderlist:[
@@ -56,20 +66,31 @@ export default {
         {name:'商铺写字楼',link:'/storehouse'},
         {name:'百房新闻',link:'/newshouse'},
         {name:'百房视频',link:'/videohouse'},
-        {name:'看房报名',link:'/watchhouse'},
-        {name:'问答',link:'/reply'}
+        {name:'看房报名',link:'/watchhouse'}
+       /* {name:'问答',link:'/reply'}*/
 
       ],
       // activeIndex:'/',
       areaList:[],
       selectArea:'长沙',
-      ctid: '2018',
+      ctid:window.localStorage.getItem('ctid') || '2018',
       visible: false,
-      selectIndex:'/index'
+      selectIndex:'/index',
+      suggestVisible: false,
+      cityAreaList: [],
+      averagePriceList: [],
+      totalPriiceList: []
     }
   },
+  create() {
+
+  },
    mounted(){
-    this.getCity()
+     this.getCity()
+     this.getZdData()
+     this.getCityArea()
+     this.getCityTotalPrice()
+     this.getCityAverage()
    },
   methods:{
     getCity () {
@@ -77,6 +98,7 @@ export default {
       this.api.postData(this, params).then((res) => {
         if (res.code === 0) {
           this.areaList = res.data
+
         } else {
 
         }
@@ -85,21 +107,77 @@ export default {
       })
     },
     handleSelect(key, keyPath) {
-      if(this.selectIndex!=key){
-        this.$router.push(key)
-      }
+      this.$router.push(key)
       this.selectIndex = key
     },
     selectCity(city){
       this.selectArea = city.ctname
       this.ctid = city.ctid.toString()
+      window.localStorage.setItem('ctid', this.ctid)
       this.visible = false
-    }
+    },
+    close() {
+      this.suggestVisible = false
+    },
+//获取查询条件数据字典
+    getZdData() {
+      let params = this.api.getParam('cm2')
+      this.api.postData(this, params).then((res) => {
+        if (res.code === 0) {
+          this.$root.metadata = res.data
+        } else {
+
+        }
+      }).catch((code) => {
+
+      })
+    },
+    //根据城市id获取辖区
+    getCityArea() {
+      let params = this.api.getParam('qy3', {ctid: this.ctid})
+      this.api.postData(this, params).then((res) => {
+        if (res.code === 0) {
+          window.localStorage.setItem('areaList',  JSON.stringify(res.data))
+        } else {
+
+        }
+      }).catch((code) => {
+
+      })
+    },
+    //根据城市ID查询均价
+    getCityAverage () {
+      let params = this.api.getParam('jg1', {ctid: this.ctid})
+      this.api.postData(this, params).then((res) => {
+        if (res.code === 0) {
+          window.localStorage.setItem('averagePriceList', JSON.stringify(res.data))
+        } else {
+
+        }
+      }).catch((code) => {
+
+      })
+    },
+    //根据城市id获取总价
+    getCityTotalPrice() {
+      let params = this.api.getParam('zj1', {ctid: this.ctid})
+      this.api.postData(this, params).then((res) => {
+        if (res.code === 0) {
+
+          window.localStorage.setItem('totalPriceList',  JSON.stringify(res.data))
+        } else {
+
+        }
+      }).catch((code) => {
+
+      })
+    },
+
   }
 }
 </script>
 
-<style>
+<style lang="scss">
   *{
     margin: 0;
     padding: 0;
@@ -144,6 +222,9 @@ export default {
   .el-popper[x-placement^=bottom] {
     margin-top:0;
   }
+  .flex-layout {
+    display: flex;
+  }
 .area-wrapper {
   width: 350px;
   font-size: 12px;
@@ -179,4 +260,27 @@ export default {
   color: #2c3e50;
 
 }
+  .suggest-wrapper {
+    position: fixed;
+    right: 10px;
+    top:50%;
+    border: 1px solid #e8e8e8;
+    border-radius: 4px;
+    .suggest {
+      cursor: pointer;
+      text-align: center;
+      font-size: 12px;
+      color: #999;
+      padding: 10px 15px;
+      border-radius: 4px;
+      i {
+        font-size: 25px;
+        margin-bottom: 3px;
+      }
+      &:hover {
+        background: #ff911b;
+        color: #fff;
+      }
+    }
+  }
 </style>

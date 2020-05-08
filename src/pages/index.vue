@@ -4,11 +4,8 @@
       <div class="content-fl">
         <div class="warp">
           <el-tabs type="border-card" tab-position="left" class="firstMun">
-            <el-tab-pane label="新房" >
-              <query-condition :ctqy="syValue.ctqy" :dj="syValue.dj"></query-condition>
-            </el-tab-pane>
-            <el-tab-pane label="二手房">
-              <query-condition :ctqy="syValue.ctqy" :dj="syValue.dj"></query-condition>
+            <el-tab-pane label="买房" >
+              <query-condition :ctqy="syValue.ctqy" :dj="syValue.dj" :zj="syValue.zj"></query-condition>
             </el-tab-pane>
             <el-tab-pane label="写字楼商铺">
               <div class="inputContent">
@@ -76,7 +73,7 @@
                <!-- <img class="hot-house-img" :src="item.cxfmtpurl">-->
                 <img class="hot-house-img" src="http://47.106.8.146:8080/file/02/220.jpg">
                 <div class="h-name link"> {{item.lpname}} </div>
-                <div class="h-desc"> 均价{{item.junj}}元/m  户型{{item.hx}}室 </div>
+                <div class="h-desc"> 均价{{item.junj}}元/m </div>
                <!-- <div class="h_info">
                   <span class="info_text">春暖花开礼献长沙</span>
                   <span class="sign_num">56已报名</span>
@@ -480,9 +477,10 @@
   padding:0px 0px!important;
 }
 .content-fl>.warp>.firstMun .el-tabs__item{
-  padding: 0px 60px!important;
-  height: 100px!important;
-  line-height: 80px!important;
+  padding: 0px 40px!important;
+  height: 150px!important;
+  line-height: 150px!important;
+  text-align: center;
 }
 .tipTitle{
   font-size: 22px;

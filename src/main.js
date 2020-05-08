@@ -13,14 +13,19 @@ import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.min.css'
 
 import axios from  'axios'
+import cookie from 'js-cookie'
 import  api  from  './http/api'
+import tools from './plugins/tools'
+
 
 Vue.prototype.$http = axios
 Vue.prototype.api = api
+Vue.prototype.$cookie = cookie
 
 
 Vue.use(VueAwesomeSwiper)
 Vue.use(ElementUI)
+Vue.use(tools)
 Vue.config.productionTip = false
 Vue.use(BaiduMap, {
   ak: 'xGaxPyGphEI1910NaGnKjdPXnMWQbBrF'

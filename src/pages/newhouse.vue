@@ -2,11 +2,7 @@
   <div class="main">
     <div class="searchWarp">
       <el-card class="box-card">
-        <my-select typeAll='1' title="位置" :areaList="areaList" :lineList="lineList" @chidrenFnOne="selectValuearea" @chidrenFnTwo="selectValueline"></my-select>
-        <my-select typeAll='1' title="价格" :areaList="OnlypriceList" :lineList="allpriceList" @chidrenFnOne="selectValueonly" @chidrenFnTwo="selectValueall"></my-select>
-        <my-select typeAll='2' title="户型" :mylist="typeArea" @chidrenFnthree="typeAreaselect" ></my-select>
-        <my-select typeAll='2' title="面积" :mylist="mainjiArea" @chidrenFnthree="typeAreaselect" ></my-select>
-        <my-select typeAll='3' title="更多" :shuomingArray="shuomingArray" :optionsArray="optionsList" @chidrenFnfour="getSelectValue"></my-select>
+        <my-select  @selectConditions="selectConditions"></my-select>
       </el-card>
     </div>
     <div class="contWarp">
@@ -23,18 +19,7 @@
             </div>
             <my-warp :warpList="allList"></my-warp>
           </el-tab-pane>
-          <el-tab-pane label="优惠楼盘">
-            <div class="itemHeader">
-              <span class="allmx">共有<span>42</span>个符合要求的长沙楼盘</span>
-              <span class="allpx" >
-                <span @click="handhleCaret(1)" :class="[myCaret==1?'mypint':'']">默认排序</span>
-                <span @click="handhleCaret(2)" :class="[myCaret==2?'mypint':'']">价格<i class="el-icon-d-caret"></i></span>
-                <span @click="handhleCaret(3)" :class="[myCaret==3?'mypint':'']">开盘时间<i class="el-icon-d-caret"></i></span>
-              </span>
-            </div>
-            <my-warp :warpList="allList"></my-warp>
-          </el-tab-pane>
-          <el-tab-pane label="品牌楼盘">
+          <el-tab-pane label="最新楼盘">
             <div class="itemHeader">
               <span class="allmx">共有<span>42</span>个符合要求的长沙楼盘</span>
               <span class="allpx" >
@@ -55,11 +40,11 @@
           </div>
           <div class="more">更多<i class="el-icon-d-arrow-right"></i></div>
         </div>
-        
+
         <new-img wordOrimg='1' :newimgList="imgList"></new-img>
       </div>
     </div>
-   
+
   </div>
 </template>
 <script>
@@ -82,55 +67,10 @@ export default {
        selectIndexline:0,
        selectIndexpriceonly:0,
        selectIndexpriceall:0,
-       areaList:[
-         {label:'全部',value:'1'},
-         {label:'龙岗',value:'2'},
-         {label:'南山',value:'3'},
-         {label:'宝安',value:'4'},
-         {label:'深圳周边',value:'4'},
-         {label:'龙华区',value:'5'},
-         {label:'福田',value:'6'},
-         {label:'罗湖',value:'7'},
-         {label:'坪山区',value:'8'},
-         {label:'光明',value:'9'},
-         {label:'盐田',value:'10'},
-         {label:'大鹏新区',value:'11'},
-         {label:'惠州',value:'12'}
-       ],
-       lineList:[
-        {label:'全部',value:'1'},
-        {label:'1号线',value:'2'},
-        {label:'2号线',value:'3'},
-        {label:'3号线',value:'4'},
-        {label:'4号线',value:'4'},
-        {label:'5号线',value:'5'},
-        {label:'7号线',value:'6'},
-        {label:'9号线',value:'7'},
-        {label:'11号线',value:'8'}
-              
-       ],
-       OnlypriceList:[
-        {label:'全部',value:'1'},
-        {label:'1万',value:'2'},
-        {label:'2万',value:'3'},
-        {label:'3万',value:'4'},
-        {label:'4万',value:'4'},
-        {label:'5万',value:'5'},
-        {label:'7万',value:'6'},
-        {label:'9万',value:'7'},
-        {label:'11万',value:'8'}
-       ],
-       allpriceList:[
-       {label:'全部',value:'1'},
-        {label:'10万',value:'2'},
-        {label:'20万',value:'3'},
-        {label:'30万',value:'4'},
-        {label:'40万',value:'4'},
-        {label:'50-55万',value:'5'},
-        {label:'70-80万',value:'6'},
-        {label:'90万',value:'7'},
-        {label:'110万',value:'8'}
-       ],
+       areaList: JSON.parse(localStorage.getItem('areaList')) || [],
+       lineList:[],
+       OnlypriceList: JSON.parse(localStorage.getItem('averagePriceList')) || [],
+       allpriceList:JSON.parse(localStorage.getItem('totalPriceList')) || [],
        typeArea:[
         {label:'全部',value:'1'},
         {label:'一室',value:'2'},
@@ -209,15 +149,16 @@ export default {
           perPage: 1,
           textWord:"个有关深圳新房楼盘"
         },
-      
+
       }
     },
     mounted(){
       window.sessionStorage.setItem('warpList',JSON.stringify(this.allList))
-      
+
 
     },
     methods:{
+
       overhanle(i){
         if(i==1){
           this.areaIndex = !this.areaIndex
@@ -226,28 +167,26 @@ export default {
           this.priceIndex = !this.priceIndex
         }
       },
-      selectValuearea(i){
-        console.log(i)
+      getList() {
+        let params = this.api.getParam('sydata3', {ctid: this.ctid}, {paging:true,pageNow:"1",order:"lpid",sort:"desc"})
+        this.api.postData(this, params).then((data) => {
+          if (data.code === 0) {
+            this.syValue =JSON.parse(data.data.syvalue)
+          } else {
+
+          }
+        }).catch((code) => {
+
+        })
       },
-      selectValueline(i){
-        console.log(i)
+      selectConditions(condition){
+        console.log(condition)
       },
-      selectValueonly(i){
-        console.log(i)
-      },
-      selectValueall(i){
-        console.log(i)
-      },
-      typeAreaselect(i){
-        console.log(i)
-      },
-      getSelectValue(i){
-        console.log(i)
-      },
+
       handhleCaret(i){
         this.myCaret = i
         if(i==1){
-          this.allList =JSON.parse(window.sessionStorage.getItem('warpList')) 
+          this.allList =JSON.parse(window.sessionStorage.getItem('warpList'))
         }else if(i==2){
           function sortNumber(a,b){
             return a.price - b.price
@@ -336,7 +275,7 @@ export default {
 }
 .allmx{
   float: left;
-  
+
 }
 .allmx>span{
   color: red;

@@ -26,7 +26,7 @@
         <div class="listContent borderLeft">
           <span v-for="item in ctqy" @click="toOldHourse" class="link"><a>{{item.ctqyname}}</a></span>
           <div class="priceContent">
-            <span v-for="item in dj" @click="toOldHourse" class="link"><a >{{item.dj}}</a></span>
+            <span v-for="item in zj" @click="toOldHourse" class="link"><a >{{item.zj}}</a></span>
           </div>
         </div>
       </div>
@@ -47,6 +47,12 @@
         }
       },
       dj : { //-楼盘查询条件字典，单价范围
+        type: Array,
+        default: () => {
+          return []
+        }
+      },
+      zj : { //-楼盘查询条件字典，总价范围
         type: Array,
         default: () => {
           return []
