@@ -242,19 +242,16 @@ export default {
         {url:require('../assets/item.jpg'),word:'碧桂园印象4'},
        ],
        pagination: {
-          totalItem: 20,
-          totalPage: 20,
-          curPage: 1,
-          perPage: 1,
-          textWord:"个有关深圳新房楼盘"
+          total: 10,
+          pageNo: 1,
+          pageSize: 5
         },
       
       }
     },
     mounted(){
       window.sessionStorage.setItem('warpList',JSON.stringify(this.allList))
-      
-
+      this.getDataList()
     },
     methods:{
       overhanle(i){
@@ -307,6 +304,20 @@ export default {
         this.search.page = page
         // this.getData()
       },
+      getDataList() {
+        let conditions = {"ctid":"2018","newbq":null,"ctqybm":null,"lmqybm":null,"djminvaue":null,"djmaxvaue":null,"zjminvalue":null,"zjmaxvalue":null,"mjminvalue":null,"mjmaxvalue":null,"hx":null,"xszt":null,"wylx":null,"zxzk":null,"kpsj":null}
+           let params = this.api.getParam('lp1', conditions, {paging: true,pageNow:"1",pageSize:"10", order:"lpid",sort:"desc"})
+          this.api.postData(this, params).then((res) => {
+            if (res.code === 0) {
+            this.allList = res.data.rows
+            this.pagination.total = res.data.total
+            } else {
+
+            }
+          }).catch((code) => {
+
+          })
+      }
     }
 }
 </script>

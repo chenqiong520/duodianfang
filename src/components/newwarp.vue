@@ -6,24 +6,24 @@
           <img :src="i.url" alt="item" width="100%">
         </el-col>
         <el-col :span="18">
-          <p class="itemName">{{i.name}}</p>
+          <p class="itemName">{{i.lpname}}</p>
           <div class="address">
             <span class="itemAddress">
-              {{i.address}}
+              {{i.sldz}}
             </span>
             <span class="itemAddressPrice">
-              均价<span>{{i.price}}</span>元/㎡
+              均价<span>{{i.junj}}</span>元/㎡
             </span>
           </div>
           <div class="address">
             <span class="itemAddress">
-              {{i.type}}
+              户型：{{i.type}} | 建筑面积：{{i.zdmj}}
             </span>
           </div>
           <div class="address">
-            <span class="itempaint forsale">{{i.ifsave}}</span>
-            <span class="itempaint wuyetp">{{i.typeof}}</span>
-            <span class="itempaint emp">{{i.dus}}</span>
+            <span class="itempaint forsale">{{i.xsztvalue}}</span>
+            <span class="itempaint wuyetp">{{i.wylxvalue}}</span>
+            <span class="itempaint emp">{{i.jzlxvalue}}</span>
           </div>
         </el-col>
       </el-row>

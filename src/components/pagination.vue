@@ -1,17 +1,17 @@
 <template>
   <section>
     <div class="footerpage">
-      <span class="text">共有<span style="color:red">{{pagination.totalItem}}</span>{{pagination.textWord}}</span>
+      <span class="text">共有 {{pagination.total}}条</span>
       <el-pagination background
         style="float: right;"
         @size-change="sizeChange"
         @current-change="pageChange"
-        :current-page="pagination.curPage"
-        :page-size="parseInt(pagination.perPage)"
-        :page-sizes="perPages"
+        :current-page="pagination.pageNo"
+        :page-size="parseInt(pagination.pageSize)"
+        :page-sizes="[10, 15,20,50,100]"
         layout="prev, pager, next"
-        :total="pagination.totalItem"
-        v-if="pagination.totalItem > 0" />
+        :total="pagination.total"
+        v-if="pagination.total > 0" />
     </div>
   </section>
   
@@ -24,10 +24,9 @@ props: {
     type: Object,
     default () {
       return {
-        curPage: 1,
-        perPage: 20,
-        totalItem: 20,
-        textWord:''
+        pageNo: 1,
+        pageSize: 20,
+        total: 20
       }
     }
   },
@@ -44,19 +43,6 @@ props: {
   pageChange: {
     type: Function,
     default: page => {}
-  }
-},
-computed: {
-  perPages () {
-    let arr = []
-    let baseSize = 20
-    for (let i = 0, len = Math.ceil(this.pagination.totalItem / baseSize); i < len; i++) {
-      arr.push(baseSize * (i + 1))
-      if (baseSize * (i + 1) >= 200) {
-        break
-      }
-    }
-    return arr
   }
 },
 methods: {
