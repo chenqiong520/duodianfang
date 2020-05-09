@@ -152,23 +152,27 @@
             zxzk: null //装修状态
 
           },
-          metadata: {
+          /*metadata: {
             HX: [],
             XSZT: [], //销售状态
             WYLX: [], //类型
             KPSJ: [],//开盘时间
             ZXZK: [] // 装修
 
-          }
+          }*/
 
         }
       },
     mounted() {
       this.init()
     },
+    computed: {
+      metadata() {
+        return this.$store.state.metadata
+      }
+    },
     methods: {
         init() {
-          this.metadata= this.$root.metadata
           this.areaList.splice(0, 0,{ctqyname: '全部', qybm: null})
           this.averagePriceList.splice(0, 0,{dj: '全部', djmaxvalue: null})
           this.totalPriceList.splice(0, 0,{zj: '全部', zjmaxvalue: null})

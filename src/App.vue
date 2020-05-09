@@ -83,11 +83,10 @@ export default {
     }
   },
   created() {
-    this.getZdData()
+    this.$store.dispatch('getMetadata', this.ctid)
   },
    mounted(){
      this.getCity()
-
      this.getCityArea()
      this.getCityTotalPrice()
      this.getCityAverage()
@@ -98,7 +97,6 @@ export default {
       this.api.postData(this, params).then((res) => {
         if (res.code === 0) {
           this.areaList = res.data
-
         } else {
 
         }
@@ -118,19 +116,6 @@ export default {
     },
     close() {
       this.suggestVisible = false
-    },
-//获取查询条件数据字典
-    getZdData() {
-      let params = this.api.getParam('cm2')
-      this.api.postData(this, params).then((res) => {
-        if (res.code === 0) {
-          this.$root.metadata = res.data
-        } else {
-
-        }
-      }).catch((code) => {
-
-      })
     },
     //根据城市id获取辖区
     getCityArea() {

@@ -3,7 +3,7 @@
     <div class="itemWarp" v-for="(i,k) in warpList" :key="k">
       <el-row :gutter="24">
         <el-col :span="6">
-          <img src="@/assets/item.jpg" alt="item" width="100%">
+          <img :src="i.cxfmtpurl" alt="item" width="100%">
         </el-col>
         <el-col :span="18">
           <p class="itemName">{{i.lpname}}</p>

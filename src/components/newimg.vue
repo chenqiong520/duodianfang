@@ -1,8 +1,8 @@
 <template>
   <section>
     <div class="newItem" v-for="(i,k) in newimgList" :key="k" v-if="wordOrimg=='1'">
-        <img :src="i.url" alt="item" width="100%">
-        <div class="myword">{{i.word}}</div>
+        <img :src="i.cxfmtpurl" alt="item" width="100%">
+        <div class="myword">{{i.lpname}}</div>
     </div>
     <div class="newItemT" v-for="(i,k) in newimgList" :key="k"  v-if="wordOrimg!='1'">
       <template>
@@ -27,7 +27,7 @@
         wordOrimg:{
           type: String,
           default: () => {
-            return 
+            return
           }
         },
       }
@@ -53,7 +53,7 @@
     padding: 0px 4px;
     margin-right: 2px;
     color: #fff;
-    
+
   }
   .red{
     background-color: #ff552e;

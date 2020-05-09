@@ -19,7 +19,7 @@
             </div>
             <my-warp :warpList="allList"></my-warp>
           </el-tab-pane>
-          <el-tab-pane label="热门楼盘" name="hot">
+          <el-tab-pane label="最新楼盘" name="hot">
             <div class="itemHeader">
               <span class="allmx">共有<span>{{pagination.total}}</span>个符合要求的楼盘</span>
               <span class="allpx" >
@@ -36,7 +36,7 @@
       <div class="contWarp-fr">
         <div class="toptitle">
           <div class="rightTitle">
-            房产问答
+            热门楼盘
           </div>
           <div class="more">更多<i class="el-icon-d-arrow-right"></i></div>
         </div>
@@ -69,12 +69,7 @@
       return {
         myCaret:1,
         allList:[],
-        imgList:[
-          {url:require('../assets/item.jpg'),word:'碧桂园印象1'},
-          {url:require('../assets/item.jpg'),word:'碧桂园印象2'},
-          {url:require('../assets/item.jpg'),word:'碧桂园印象3'},
-          {url:require('../assets/item.jpg'),word:'碧桂园印象4'},
-        ],
+        imgList:[],
         conditions: {
           ctid:"",
           newbq:null,// 新房标签
@@ -104,6 +99,7 @@
     mounted(){
       this.conditions.ctid = this.ctid
       this.getDataList()
+      this.getHotList()
     },
     methods:{
       handleClickTab (tab) {
@@ -151,11 +147,24 @@
       },
       getDataList() {
         let params = this.api.getParam('lp1', this.conditions, {paging: true,pageNow:this.pagination.pageNo,pageSize:this.pagination.pageSize, order:this.pagination.order,sort:"desc"})
-        console.log(params)
         this.api.postData(this, params).then((res) => {
           if (res.code === 0) {
             this.allList = res.data.rows
             this.pagination.total = res.data.total
+          } else {
+
+          }
+        }).catch((code) => {
+
+        })
+      },
+      getHotList() {
+        let conditions = {ctid:this.ctid,newbq:1,ctqybm:null,lmqybm:null,djminvaue:null,djmaxvaue:null,
+          zjminvalue:null,zjmaxvalue:null,mjminvalue:null,mjmaxvalue:null,hx:null,xszt:null,wylx:null,zxzk:null,kpsj:null}
+        let params = this.api.getParam('lp1', conditions, {paging: true,pageNow:1,pageSize:5, order:'lpid',sort:"desc"})
+        this.api.postData(this, params).then((res) => {
+          if (res.code === 0) {
+            this.imgList= res.data.rows
           } else {
 
           }

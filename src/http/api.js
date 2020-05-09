@@ -1,4 +1,4 @@
-const url =  '47.106.8.146:8080/ddf'
+const url =  '47.106.8.146:80/ddf'
 export default {
   getParam (callid, param, pagemap) {
     if (!pagemap) pagemap = {}

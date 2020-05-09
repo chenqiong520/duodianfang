@@ -7,21 +7,21 @@
     </div>
     <div class="contWarp">
       <div class="contWarp-fl">
-        <el-tabs type="border-card">
-          <el-tab-pane label="全部楼盘">
+        <el-tabs type="border-card" v-model="tabName" @tab-click="handleClickTab">
+          <el-tab-pane label="全部楼盘" name="all">
             <div class="itemHeader">
-              <span class="allmx">共有<span>42</span>个符合要求的长沙楼盘</span>
+              <span class="allmx">共有<span>{{pagination.total}}</span>个符合要求的楼盘</span>
               <span class="allpx" >
-                <span @click="handhleCaret(1)" :class="[myCaret==1?'mypint':'']">默认排序</span>
-                <span @click="handhleCaret(2)" :class="[myCaret==2?'mypint':'']">价格<i class="el-icon-d-caret"></i></span>
-                <span @click="handhleCaret(3)" :class="[myCaret==3?'mypint':'']">开盘时间<i class="el-icon-d-caret"></i></span>
+                <span @click="handhleCaret(1, 'lpid')" :class="[myCaret==1?'mypint':'']">默认排序</span>
+                <span @click="handhleCaret(2, 'junj')" :class="[myCaret==2?'mypint':'']">价格<i class="el-icon-d-caret"></i></span>
+                <span @click="handhleCaret(3, 'kpsj')" :class="[myCaret==3?'mypint':'']">开盘时间<i class="el-icon-d-caret"></i></span>
               </span>
             </div>
             <my-warp :warpList="allList"></my-warp>
           </el-tab-pane>
-          <el-tab-pane label="最新楼盘">
+          <el-tab-pane label="最新楼盘" name="hot">
             <div class="itemHeader">
-              <span class="allmx">共有<span>42</span>个符合要求的长沙楼盘</span>
+              <span class="allmx">共有<span>{{pagination.total}}</span>个符合要求的楼盘</span>
               <span class="allpx" >
                 <span @click="handhleCaret(1)" :class="[myCaret==1?'mypint':'']">默认排序</span>
                 <span @click="handhleCaret(2)" :class="[myCaret==2?'mypint':'']">价格<i class="el-icon-d-caret"></i></span>
@@ -59,164 +59,98 @@
       newImg,
       pagination
     },
+    props: {
+      ctid: {
+        type: String,
+        default: '2018'
+      }
+    },
     data(){
       return {
-        areaIndex:false,
-        priceIndex:false,
-        selectIndexarea:0,
-        selectIndexline:0,
-        selectIndexpriceonly:0,
-        selectIndexpriceall:0,
-        areaList:[
-          {label:'全部',value:'1'},
-          {label:'龙岗',value:'2'},
-          {label:'南山',value:'3'},
-          {label:'宝安',value:'4'},
-          {label:'深圳周边',value:'4'},
-          {label:'龙华区',value:'5'},
-          {label:'福田',value:'6'},
-          {label:'罗湖',value:'7'},
-          {label:'坪山区',value:'8'},
-          {label:'光明',value:'9'},
-          {label:'盐田',value:'10'},
-          {label:'大鹏新区',value:'11'},
-          {label:'惠州',value:'12'}
-        ],
-        lineList:[
-          {label:'全部',value:'1'},
-          {label:'1号线',value:'2'},
-          {label:'2号线',value:'3'},
-          {label:'3号线',value:'4'},
-          {label:'4号线',value:'4'},
-          {label:'5号线',value:'5'},
-          {label:'7号线',value:'6'},
-          {label:'9号线',value:'7'},
-          {label:'11号线',value:'8'}
-
-        ],
-        OnlypriceList:[
-          {label:'全部',value:'1'},
-          {label:'1万',value:'2'},
-          {label:'2万',value:'3'},
-          {label:'3万',value:'4'},
-          {label:'4万',value:'4'},
-          {label:'5万',value:'5'},
-          {label:'7万',value:'6'},
-          {label:'9万',value:'7'},
-          {label:'11万',value:'8'}
-        ],
-        allpriceList:[
-          {label:'全部',value:'1'},
-          {label:'10万',value:'2'},
-          {label:'20万',value:'3'},
-          {label:'30万',value:'4'},
-          {label:'40万',value:'4'},
-          {label:'50-55万',value:'5'},
-          {label:'70-80万',value:'6'},
-          {label:'90万',value:'7'},
-          {label:'110万',value:'8'}
-        ],
-        typeArea:[
-          {label:'全部',value:'1'},
-          {label:'一室',value:'2'},
-          {label:'二室',value:'3'},
-          {label:'三室',value:'4'},
-          {label:'四室',value:'5'},
-          {label:'四室以上',value:'6'}
-        ],
-        mainjiArea:[
-          {label:'全部',value:'1'},
-          {label:'60m^2',value:'2'},
-          {label:'80m^2',value:'3'},
-          {label:'90m^2',value:'4'},
-          {label:'100m^2',value:'5'},
-          {label:'100m^2以上',value:'6'}
-        ],
-        shuomingArray:['建造年代','房屋类型','楼层','朝向','装修'],
-        optionsList:[
-          [{
-            value: '0',
-            label: '全部'
-          }, {
-            value: '1',
-            label: '2015年后'
-          }, {
-            value: '2',
-            label: '2016年后'
-          }],
-          [{
-            value: '0',
-            label: '公寓'
-          }, {
-            value: '1',
-            label: '普通住宅'
-          }],
-          [{
-            value: '0',
-            label: '六层以下'
-          }, {
-            value: '1',
-            label: '六层以上'
-          }],
-          [{
-            value: '0',
-            label: '东'
-          }, {
-            value: '1',
-            label: '南'
-          }],
-          [{
-            value: '0',
-            label: '毛坯'
-          }, {
-            value: '1',
-            label: '精装'
-          }]
-        ],
         myCaret:1,
-        allList:[
-          {url:require('../assets/item.jpg'),name:'碧桂园印象',address:'[ 雨花 雨花中心 ] 香樟路与圭塘路交汇处',price:10999,type:'户型：商住 |建筑面积30-50m2',ifsave:'待售',typeof:'住宅',dus:'vr看房',time:1469382644},
-          {url:require('../assets/item.jpg'),name:'碧桂园印象',address:'[ 雨花 雨花中心 ] 香樟路与圭塘路交汇处',price:8325,type:'户型：商住 |建筑面积30-50m2',ifsave:'待售',typeof:'住宅',dus:'vr看房',time:1469342544},
-          {url:require('../assets/item.jpg'),name:'碧桂园印象',address:'[ 雨花 雨花中心 ] 香樟路与圭塘路交汇处',price:9523,type:'户型：商住 |建筑面积30-50m2',ifsave:'待售',typeof:'住宅',dus:'vr看房',time:1463453444},
-          {url:require('../assets/item.jpg'),name:'碧桂园印象',address:'[ 雨花 雨花中心 ] 香樟路与圭塘路交汇处',price:8642,type:'户型：商住 |建筑面积30-50m2',ifsave:'待售',typeof:'住宅',dus:'vr看房',time:1463453644},
-          {url:require('../assets/item.jpg'),name:'碧桂园印象',address:'[ 雨花 雨花中心 ] 香樟路与圭塘路交汇处',price:13023,type:'户型：商住 |建筑面积30-50m2',ifsave:'待售',typeof:'住宅',dus:'vr看房',time:1464532644}
-        ],
-        imgList:[
-          {url:require('../assets/item.jpg'),word:'碧桂园印象1'},
-          {url:require('../assets/item.jpg'),word:'碧桂园印象2'},
-          {url:require('../assets/item.jpg'),word:'碧桂园印象3'},
-          {url:require('../assets/item.jpg'),word:'碧桂园印象4'},
-        ],
-        pagination: {
-          totalItem: 20,
-          totalPage: 20,
-          curPage: 1,
-          perPage: 1,
-          textWord:"个有关深圳新房楼盘"
+        allList:[],
+        imgList:[],
+        conditions: {
+          ctid:"",
+          newbq:null,// 新房标签
+          ctqybm:null, //城市区
+          lmqybm:null, //街道
+          djminvaue:null, //单价最小值
+          djmaxvaue:null, // 单价最大值
+          zjminvalue:null,//总价最小值
+          zjmaxvalue:null,//总价最大值
+          mjminvalue:null,//面积最小值
+          mjmaxvalue:null,//面积最大值
+          hx:null,//户型
+          xszt:null,//销售状态
+          wylx:null,//物业类型
+          zxzk:null,//装修状态
+          kpsj:null//开盘时间
         },
-
+        pagination: {
+          total: 10,
+          pageNo: 1,
+          pageSize: 5,
+          order: 'lpid'
+        },
+        tabName: 'all'
       }
     },
     mounted(){
-      window.sessionStorage.setItem('warpList',JSON.stringify(this.allList))
-
-
+      this.conditions.ctid = this.ctid
+      this.getDataList()
+      this.getHotList()
     },
     methods:{
-
-      overhanle(i){
-        if(i==1){
-          this.areaIndex = !this.areaIndex
+      handleClickTab (tab) {
+        let newbq = null
+        if(tab.name=== 'hot') {
+          newbq = 1
+        } else {
+          newbq = null
         }
-        if(i==2){
-          this.priceIndex = !this.priceIndex
-        }
+        this.conditions.newbq = newbq
+        this.pagination.pageNo = 1
+        this.getDataList()
       },
-      getList() {
-        let params = this.api.getParam('sydata3', {ctid: this.ctid}, {paging:true,pageNow:"1",order:"lpid",sort:"desc"})
-        this.api.postData(this, params).then((data) => {
-          if (data.code === 0) {
-            this.syValue =JSON.parse(data.data.syvalue)
+      //排序方式
+      handhleCaret(i, order){
+        this.myCaret = i
+        this.pagination.order = order
+        this.pagination.pageNo = 1
+        this.getDataList()
+      },
+      sizeChange (size) {
+        this.pagination.pageSize = size
+        this.getDataList()
+      },
+      pageChange (page) {
+        this.pagination.pageNo = page
+        this.getDataList()
+      },
+      selectConditions(conditions) {
+        this.conditions.ctqybm = conditions.ctqybm
+        this.conditions.zjminvalue = conditions.zjminvalue
+        this.conditions.zjmaxvalue= conditions.zjmaxvalue
+        this.conditions.djminvaue= conditions.djminvaue
+        this.conditions.djmaxvalue= conditions.djmaxvalue
+        this.conditions.mjminvalue=conditions.mjminvalue//面积最小值
+        this.conditions.mjmaxvalue=conditions.mjmaxvalue//面积最大值
+        this.conditions.hx =conditions.hx
+        this.conditions.xszt= conditions.xszt//销售状态
+        this.conditions.wylx= conditions.wylx //物业类型
+        this.conditions.kpsj= conditions.kpsj //开盘时间
+        this.conditions.zxzk= conditions.zxzk //装修状态
+        this.pagination.pageNo = 1
+        this.getDataList()
+
+      },
+      getDataList() {
+        let params = this.api.getParam('lp1', this.conditions, {paging: true,pageNow:this.pagination.pageNo,pageSize:this.pagination.pageSize, order:this.pagination.order,sort:"desc"})
+        this.api.postData(this, params).then((res) => {
+          if (res.code === 0) {
+            this.allList = res.data.rows
+            this.pagination.total = res.data.total
           } else {
 
           }
@@ -224,48 +158,20 @@
 
         })
       },
-      selectValuearea(i){
-        console.log(i)
-      },
-      selectValueline(i){
-        console.log(i)
-      },
-      selectValueonly(i){
-        console.log(i)
-      },
-      selectValueall(i){
-        console.log(i)
-      },
-      typeAreaselect(i){
-        console.log(i)
-      },
-      getSelectValue(i){
-        console.log(i)
-      },
-      handhleCaret(i){
-        this.myCaret = i
-        if(i==1){
-          this.allList =JSON.parse(window.sessionStorage.getItem('warpList'))
-        }else if(i==2){
-          function sortNumber(a,b){
-            return a.price - b.price
+      getHotList() {
+        let conditions = {ctid:this.ctid,newbq:1,ctqybm:null,lmqybm:null,djminvaue:null,djmaxvaue:null,
+          zjminvalue:null,zjmaxvalue:null,mjminvalue:null,mjmaxvalue:null,hx:null,xszt:null,wylx:null,zxzk:null,kpsj:null}
+        let params = this.api.getParam('lp1', conditions, {paging: true,pageNow:1,pageSize:5, order:'lpid',sort:"desc"})
+        this.api.postData(this, params).then((res) => {
+          if (res.code === 0) {
+            this.imgList= res.data.rows
+          } else {
+
           }
-          this.allList = this.allList.sort(sortNumber)
-        }else if(i==3){
-          function sortNumber(a,b){
-            return a.time - b.time
-          }
-          this.allList = this.allList.sort(sortNumber)
-        }
-      },
-      sizeChange (size) {
-        this.search.perPage = size
-        // this.getData()
-      },
-      pageChange (page) {
-        this.search.page = page
-        // this.getData()
-      },
+        }).catch((code) => {
+
+        })
+      }
     }
   }
 </script>
@@ -275,6 +181,29 @@
     width: 100%;
   }
 
+  .itemDiv{
+    width: 100%;
+    border-bottom: 1px dashed #DCDFE6;
+    text-align: left;
+    font-size: 14px;
+    line-height: 24px;
+    margin-bottom: 5px;
+    padding: 3px;
+  }
+  .itemTitle{
+    text-align: center;
+  }
+  .selectPoint{
+    cursor: pointer;
+  }
+  .mypint{
+    color: rgb(255, 208, 75);
+  }
+
+  .item-list{
+    padding: 0px 8px;
+    cursor: pointer;
+  }
   .item-list:first-child{
     padding-left: 0px;
   }

@@ -49,7 +49,7 @@
               <div class="tipTitle">百房头条</div>
               <el-carousel trigger="click" height="320px" :interval="2000">
                 <el-carousel-item v-for="item in syValue.lbt" :key="item.lbtid">
-                 <img :src="item.imageurl" style="object-fit: fill; width: 100%;height: 100%"/>
+                 <img :src="item.imageurl ||defaultImg" @error="defImg" style="object-fit: fill; width: 100%;height: 100%"/>
                 </el-carousel-item>
               </el-carousel>
             </el-col>
@@ -70,8 +70,7 @@
           <swiper :options="swiperOption">
             <swiper-slide class="swiper-slide" v-for="(item, index) in syValue.rmlp" :key="index">
               <div class=" hot-house-item">
-               <!-- <img class="hot-house-img" :src="item.cxfmtpurl">-->
-                <img class="hot-house-img" src="http://47.106.8.146:8080/file/02/220.jpg">
+                <img class="hot-house-img" :src="item.cxfmtpurl || defaultImg" @error="defImg">
                 <div class="h-name link"> {{item.lpname}} </div>
                 <div class="h-desc"> 均价{{item.junj}}元/m </div>
                <!-- <div class="h_info">
@@ -94,16 +93,15 @@
               <div class="tipTitle">百房导购</div>
               <div class="flex-layout">
                 <div class="big-guide" v-if="syValue.dglp && syValue.dglp.length > 0">
-                  <!--<img :src="syValue.dglp[0].cxfmtpurl">-->
-                  <img src="http://47.106.8.146:8080/file/02/221.jpg"/>
+                  <img :src="syValue.dglp[0].cxfmtpurl || defaultImg" @error="defImg"/>
                   <p class="link">{{syValue.dglp[0].lpname}}</p>
                 </div>
 
                 <div class="flex-layout right-layout">
                   <template v-for="(item,index) in syValue.dglp">
                     <div v-if="index > 0" class="bf-image-div" >
-                      <!--<img :src="item.cxfmtpurl">-->
-                      <img src="http://47.106.8.146:8080/file/02/221.jpg"/>
+                      <img :src="item.cxfmtpurl || defaultImg" @error="defImg">
+
                       <div class="bf-house-desc link">{{item.lpname}}</div>
                     </div>
                   </template>
@@ -138,7 +136,7 @@
                   <div class="shr-guide-item">
                     <div class="title-name">超人气小区</div>
                     <div class="flex-layout" v-if="syValue.crqxqlist && syValue.crqxqlist.length > 0">
-                      <div class="shr-img-wrapper"><img :src="syValue.crqxqlist[0].cxfmtpurl"/></div>
+                      <div class="shr-img-wrapper"><img :src="syValue.crqxqlist[0].cxfmtpurl || defaultImg" @error="defImg"/></div>
                       <div>
                         <div class="house-info link" v-for="item in syValue.crqxqlist">
                           <div class="house-name">{{item.ctqyname}}-{{item.xqname}}</div>
@@ -150,7 +148,7 @@
                   <div class="shr-guide-item">
                     <div class="title-name">最舒服小区</div>
                     <div class="flex-layout" v-if="syValue.ssxqlist && syValue.ssxqlist.length > 0">
-                      <div class="shr-img-wrapper"><img :src="syValue.ssxqlist[0].cxfmtpurl"/></div>
+                      <div class="shr-img-wrapper"><img :src="syValue.ssxqlist[0].cxfmtpurl || defaultImg" @error="defImg"/></div>
                       <div>
                         <div class="house-info link" v-for="item in syValue.ssxqlist">
                           <div class="house-name">{{item.ctqyname}}-{{item.xqname}}</div>
@@ -207,7 +205,7 @@
               <div class="flex-layout box-border-wrapper">
 
                 <div class="bf-video" v-for="item in syValue.xzlbeans">
-                  <img :src="item.cxfmtpurl">
+                  <img :src="item.cxfmtpurl"  @error="defImg">
                   <p class="bf-house-desc ellipsis link">{{item.szlp}}</p>
                   <p class="">面议</p>
                   <p class="tip-text">{{item.type | fmtType}}</p>
@@ -332,7 +330,8 @@
         newlpBmdata: {
           rows: []
         }
-      }
+      },
+      defaultImg:  require('@/assets/item.jpg')
     }
   },
     props: {
@@ -350,6 +349,11 @@
   }
   },
   methods: {
+    defImg(event){
+      let img = event.srcElement;
+      img.src = this.defaultImg;
+      img.onerror = null; //防止闪图
+    },
     initData () {
       let params = this.api.getParam('sydata3', {ctid: this.ctid}, {paging:true,pageNow:"1",order:"lpid",sort:"desc"})
       this.api.postData(this, params).then((data) => {
