@@ -70,6 +70,8 @@ export default {
   },
    mounted(){
     this.getCity()
+    this.$store.dispatch('getMetadata',this.ctid)
+    console.log(this.$store.state);
    },
   methods:{
     getCity () {

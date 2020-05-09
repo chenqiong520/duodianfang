@@ -11,13 +11,22 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
-    getMetadata (state) {
-      Vue.prototype.$http.get().then((res) => {})
+    getMetadata (state, ctid) {
+      let params = Vue.prototype.api.getParam('sydata3', {ctid: ctid}, {paging:true,pageNow:"1",order:"lpid",sort:"desc"})
+      Vue.prototype.api.postData(Vue.prototype, params).then((data) => {
+        if (data.code === 0) {
+         state.metadata = data.data
+        } else {
+
+        }
+      }).catch((code) => {
+
+      })
     }
   },
   actions: {
-    getMetadata({commit}) {
-      commit('getMetadata')
+    getMetadata({commit}, ctid) {
+      commit('getMetadata', ctid)
     }
   }
 })
