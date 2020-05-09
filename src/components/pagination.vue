@@ -30,19 +30,13 @@ props: {
       }
     }
   },
-  // textWord:{
-  //   type: String,
-  //   default () {
-  //     return ''
-  //   }
-  // },
   sizeChange: {
     type: Function,
-    default: size => {}
+    default: pageSize => {}
   },
   pageChange: {
     type: Function,
-    default: page => {}
+    default: pageNo => {}
   }
 },
 methods: {
