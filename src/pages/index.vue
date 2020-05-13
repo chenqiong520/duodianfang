@@ -9,33 +9,28 @@
             </el-tab-pane>
             <el-tab-pane label="写字楼商铺">
               <div class="inputContent">
-                <el-input placeholder="请输入内容" style="width:508px" size="small"></el-input>
-                <el-button slot="append" icon="el-icon-search" size="small" style="background:#ff911b;color: #fff;">租房</el-button>
+                <el-input placeholder="请输入内容" style="width:370px" size="small"></el-input>
+                <el-button slot="append" icon="el-icon-search" size="small" style="background:#ff911b;color: #fff;">写字楼</el-button>
+                <el-button slot="append" icon="el-icon-search" size="small" style="background:#ff612a;color: #fff;">商铺</el-button>
 
               </div>
               <div class="searchDetail">
                 <div class="detailFl">
                   <div class="listContenttitle">
-                    <span style="float: left;color: #ff612a;">新房</span>
+                    <span style="float: left;color: #ff612a;">热门区域</span>
                     <span style="float: right;"><a href="#" style="text-decoration: none;color: #2c81cd;"><i class="el-icon-location"></i>地图导航</a></span>
                   </div>
                   <div class="listContent">
-                    <span v-for="item in syValue.ctqy"><a href="#">{{item.ctqyname}}</a></span>
-                    <div class="priceContent">
-                      <span v-for="item in syValue.dj"><a href="#">{{item.dj}}</a></span>
-                    </div>
+                    <span v-for="item in syValue.rmxq"><a href="#">{{item.ctqyname}}</a></span>
                   </div>
                 </div>
                 <div class="detailFr">
                   <div class="listContenttitle contenttitle">
-                    <span style="float: left;color: #ff612a;">二手房</span>
+                    <span style="float: left;color: #ff612a;">热门板块</span>
                     <span style="float: right;"><a href="#" style="text-decoration: none;color: #2c81cd;"><i class="el-icon-location"></i>地图导航</a></span>
                   </div>
                   <div class="listContent borderLeft">
-                    <span v-for="item in syValue.ctqy"><a href="#">{{item.ctqyname}}</a></span>
-                    <div class="priceContent">
-                      <span v-for="item in syValue.dj"><a href="#">{{item.dj}}</a></span>
-                    </div>
+                    <span v-for="item in syValue.rmjd"><a href="#">{{item.lmqyname}}</a></span>
                   </div>
                 </div>
               </div>
@@ -58,7 +53,7 @@
               <div class="newsContent">
                 <div v-for="(i,k) in syValue.bfnews" :key="k" style="margin-bottom: 10px">
                   <p class="itemTitle link">{{i.title}}</p>
-                  <p class="itemList">好消息！深圳今日启用绿码通道，满足这些条件车辆可免检通行1好消息！深圳今日启用绿码通道</p>
+                  <p class="itemList">{{i.zy}}</p>
                 </div>
 
               </div>
@@ -67,7 +62,7 @@
         </div>
         <div class="warp">
           <div class="tipTitle">百房热盘</div>
-          <swiper :options="swiperOption">
+          <swiper v-if="syValue.rmlp.length>1" :options="swiperOption">
             <swiper-slide class="swiper-slide" v-for="(item, index) in syValue.rmlp" :key="index">
               <div class=" hot-house-item">
                 <img class="hot-house-img" :src="item.cxfmtpurl || defaultImg" @error="defImg">
@@ -219,21 +214,19 @@
         <div class="warp">
           <el-tabs type="border-card">
             <el-tab-pane label="深圳">
-              <div v-for="(i,k) in newsList" :key="k">
-                <p class="itemTitle">{{i.itemtitle}}</p>
-                <p class="itemList" v-for="(z,j) in i.list" :key="j" ><a :href="z.url" target="_blank">{{z.name}}1</a></p>
+              <div v-for="(i,k) in syValue.lpnews0.newxxlist" :key="k">
+                <p class="itemTitle link">{{i.title}}</p>
               </div>
             </el-tab-pane>
             <el-tab-pane label="东莞">
-              <div v-for="(i,k) in newsList" :key="k">
-                <p class="itemTitle">{{i.itemtitle}}</p>
-                <p class="itemList" v-for="(z,j) in i.list" :key="j" ><a :href="z.url" target="_blank">{{z.name}}2</a></p>
+              <div v-for="(i,k) in syValue.lpnews1.newxxlist" :key="k">
+                <p class="itemTitle link">{{i.title}}</p>
               </div>
             </el-tab-pane>
             <el-tab-pane label="惠州">
-              <div v-for="(i,k) in newsList" :key="k">
-                <p class="itemTitle">{{i.itemtitle}}</p>
-                <p class="itemList" v-for="(z,j) in i.list" :key="j" ><a :href="z.url" target="_blank">{{z.name}}3</a></p>
+              <div v-for="(i,k) in syValue.lpnews2.newxxlist" :key="k">
+                <p class="itemTitle link">{{i.title}}</p>
+                <p class="itemList">{{i.zy}}</p>
               </div>
             </el-tab-pane>
           </el-tabs>
@@ -241,7 +234,7 @@
         <div class="warp">
           <div class="tipTitle">百房看房</div>
           <div class="bfkf">
-            <template v-if="syValue.newlpBmdata && syValue.newlpBmdata.rows" v-for="(item, index ) in syValue.newlpBmdata.rows">
+            <template v-if="syValue.newlpBmdata" v-for="(item, index ) in syValue.newlpBmdata">
               <div v-if="index < 10" class="flex-layout bfkf-item" >
                 <div class="bfkf-h-name link">{{item .lpname}}</div>
                 <div class="bfkf-h-b">立即报名</div>
@@ -313,22 +306,29 @@
           disableOnInteraction: false,
         },
         slidesPerView: 2,
-        spaceBetween: 30,
+        spaceBetween: 30, //slide间距是多少
         slidesPerGroup: 2, // 多少为一组
-        loop: true,
-        loopFillGroupWithBlank: true,
+        loop: true, // 开启循环模式
         navigation: {
           nextEl: '.swiper-button-next',
           prevEl: '.swiper-button-prev'
         }
       },
       syValue: {
+        rmlp: [],
         bfnews: [],
         ctqy: [],
         dj: [],
         dglp: [],
-        newlpBmdata: {
-          rows: []
+        newlpBmdata: [],
+        lpnews0:{
+          newxxlist: []
+        },
+        lpnews1:{
+          newxxlist: []
+        },
+        lpnews2:{
+          newxxlist: []
         }
       },
       defaultImg:  require('@/assets/item.jpg')
@@ -387,17 +387,7 @@
   margin-top: 10px;
   overflow: hidden;
 }
-  .clearfix:after {
-    content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden;
-  }
 
-  .clearfix {
-    *zoom: 1;
-  }
 .warp{
   width: 100%;
   min-height: 240px;
@@ -704,13 +694,6 @@
 
         }
       }
-    }
-  }
-  .link{
-    cursor: pointer;
-    &:hover {
-      color: #ff911b;
-      text-decoration: underline;
     }
   }
   .index img {

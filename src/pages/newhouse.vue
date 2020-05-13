@@ -41,7 +41,7 @@
           <div class="more">更多<i class="el-icon-d-arrow-right"></i></div>
         </div>
 
-        <new-img wordOrimg='1' :newimgList="imgList"></new-img>
+        <new-img :newimgList="imgList"></new-img>
       </div>
     </div>
 

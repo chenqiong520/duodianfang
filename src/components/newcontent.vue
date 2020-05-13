@@ -6,14 +6,14 @@
             <img :src="i.url" alt="item" width="100%">
           </el-col>
           <el-col :span="18" v-if="i.url">
-            <p class="itemName">{{i.name}}</p>
-            <div class="itemContent">{{i.content}}</div>
-            <div class="itemTime">{{i.time}}</div>
+            <p class="itemName link" @click="toDetailNews(i.nrid)">{{i.title}}</p>
+            <div class="itemContent">{{i.zy}}</div>
+            <div class="itemTime">{{i.crtimedate}}</div>
           </el-col>
           <el-col :span="24" v-if="!i.url">
-            <p class="itemName">{{i.name}}</p>
-            <div class="itemContent">{{i.content}}</div>
-            <div class="itemTime">{{i.time}}</div>
+            <p class="itemName link" @click="toDetailNews(i.nrid)">{{i.title}}</p>
+            <div class="itemContent text">{{i.zy}}</div>
+            <div class="itemTime ">{{i.crtimedate}}</div>
           </el-col>
         </el-row>
       </div>
@@ -29,10 +29,16 @@
             return []
           }
         }
+      },
+    methods: {
+      toDetailNews(id) {
+        console.log(id)
+        this.$router.push(`/news/detail/${id}`)
       }
+    }
   }
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .itemWarp{
   padding: 20px 15px 15px;
   border-bottom: 1px dashed #ddd;
@@ -57,7 +63,7 @@
   margin-top: 8px;
   color:#999;
   /* text-align: left; */
-  
+
 }
 .itemContent{
   color: #999;
@@ -72,6 +78,10 @@
   display: -webkit-box;
   -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
+  &.text {
+  height: auto;
+  margin-bottom: 16px;
+   }
 }
 .itemTime{
   color: #999;

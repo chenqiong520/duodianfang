@@ -132,11 +132,7 @@
           mjIndex: 'all',
           valueArray:[],
           allvalue:['','','','',''],
-          areaList: JSON.parse(window.localStorage.getItem('areaList'))  || [],
           lineList: [],
-          averagePriceList: JSON.parse(window.localStorage.getItem('averagePriceList')) || [],
-          totalPriceList: JSON.parse(window.localStorage.getItem('totalPriceList')) || [],
-          mjList: JSON.parse(window.localStorage.getItem('mjList')) || [],
           conditions: {
             ctqybm: null,
             zjminvalue: null,
@@ -169,13 +165,31 @@
     computed: {
       metadata() {
         return this.$store.state.metadata
+      },
+      areaList() {
+        let list = this.$store.state.cityAreaList
+        list.splice(0, 0,{ctqyname: '全部', qybm: null})
+        return list
+      },
+      averagePriceList() {
+        let list = this.$store.state.averagePriceList
+        list.splice(0, 0,{dj: '全部', djmaxvalue: null})
+        return list
+      },
+      totalPriceList() {
+        let list = this.$store.state.totalPriceList
+        list.splice(0, 0,{zj: '全部', zjmaxvalue: null})
+        return list
+      },
+      mjList() {
+        return this.$store.state.mjList
       }
     },
     methods: {
         init() {
-          this.areaList.splice(0, 0,{ctqyname: '全部', qybm: null})
-          this.averagePriceList.splice(0, 0,{dj: '全部', djmaxvalue: null})
-          this.totalPriceList.splice(0, 0,{zj: '全部', zjmaxvalue: null})
+
+
+
         },
 
       overhanle(i){

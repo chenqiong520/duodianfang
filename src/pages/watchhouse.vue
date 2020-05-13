@@ -7,7 +7,7 @@
             <img :src="i.url" alt="" srcset="" width="100%" height="120px">
             <p class="indus">
               {{i.name}}
-              
+
             </p>
             <span class="putName">报名</span>
           </li>
@@ -24,10 +24,10 @@
           </div>
           <div class="more">更多<i class="el-icon-d-arrow-right"></i></div>
         </div>
-        
-        <new-img wordOrimg='1' :newimgList="imgList"></new-img>
+
+        <new-img  :newimgList="imgList"></new-img>
       </div>
-     
+
     </div>
   </div>
 </template>
@@ -54,10 +54,10 @@ export default {
           {url:require('../assets/item.jpg'),name:'恒大滨江悦府丨全龄生活大城，悦享缤纷文旅配套'},
          ],
         imgList:[
-          {url:require('../assets/item.jpg'),word:'碧桂园印象1'},
-          {url:require('../assets/item.jpg'),word:'碧桂园印象2'},
-          {url:require('../assets/item.jpg'),word:'碧桂园印象3'},
-          {url:require('../assets/item.jpg'),word:'碧桂园印象4'},
+          {cxfmtpurl:require('../assets/item.jpg'),lpname:'碧桂园印象1'},
+          {cxfmtpurl:require('../assets/item.jpg'),lpname:'碧桂园印象2'},
+          {cxfmtpurl:require('../assets/item.jpg'),lpname:'碧桂园印象3'},
+          {cxfmtpurl:require('../assets/item.jpg'),lpname:'碧桂园印象4'},
         ],
         pagination: {
           totalItem: 20,
@@ -124,7 +124,7 @@ export default {
   line-height: 20px;
   height: 40px;
   text-align: left;
-  
+
   /* overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis; */
@@ -148,7 +148,7 @@ export default {
   line-height: 20px;
   cursor: pointer;
   border: 1px solid #fff;
-  
+
 }
 .putName:hover{
   border: 1px solid #999;

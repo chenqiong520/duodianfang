@@ -72,8 +72,8 @@ export default {
       ],
       // activeIndex:'/',
       areaList:[],
-      selectArea:'长沙',
-      ctid:window.localStorage.getItem('ctid') || '2018',
+      selectArea:'',
+      ctid: '',
       visible: false,
       selectIndex:'/index',
       suggestVisible: false,
@@ -84,14 +84,22 @@ export default {
   },
   created() {
     this.$store.dispatch('getMetadata', this.ctid)
+    this.selectArea = this.$cookie.get('selectArea') || '长沙';
+    this.ctid = this.$cookie.get('ctid') || '2018'
   },
    mounted(){
      this.getCity()
-     this.getCityArea()
-     this.getCityTotalPrice()
-     this.getCityAverage()
+     this.init()
    },
   methods:{
+     init(){
+       this.$store.dispatch('getCityArea', this.ctid)
+       this.$store.dispatch('getCityTotalPrice', this.ctid)
+       this.$store.dispatch('getCityAverage', this.ctid)
+       this.$store.dispatch('getCityMj', this.ctid)
+
+
+     },
     getCity () {
       let params = this.api.getParam('qy17', {}, {paging:true,pageNow:"1",order:"lpid",sort:"desc"})
       this.api.postData(this, params).then((res) => {
@@ -111,65 +119,14 @@ export default {
     selectCity(city){
       this.selectArea = city.ctname
       this.ctid = city.ctid.toString()
-      window.localStorage.setItem('ctid', this.ctid)
+      this.$cookie.set('ctid', this.ctid)
+     this.$cookie.set('selectArea', this.selectArea)
       this.visible = false
+      this.init()
     },
     close() {
       this.suggestVisible = false
-    },
-    //根据城市id获取辖区
-    getCityArea() {
-      let params = this.api.getParam('qy3', {ctid: this.ctid})
-      this.api.postData(this, params).then((res) => {
-        if (res.code === 0) {
-          window.localStorage.setItem('areaList',  JSON.stringify(res.data))
-        } else {
-
-        }
-      }).catch((code) => {
-
-      })
-    },
-    //根据城市ID查询均价
-    getCityAverage () {
-      let params = this.api.getParam('jg1', {ctid: this.ctid})
-      this.api.postData(this, params).then((res) => {
-        if (res.code === 0) {
-          window.localStorage.setItem('averagePriceList', JSON.stringify(res.data))
-        } else {
-
-        }
-      }).catch((code) => {
-
-      })
-    },
-    //根据城市id获取总价
-    getCityTotalPrice() {
-      let params = this.api.getParam('zj1', {ctid: this.ctid})
-      this.api.postData(this, params).then((res) => {
-        if (res.code === 0) {
-
-          window.localStorage.setItem('totalPriceList',  JSON.stringify(res.data))
-        } else {
-
-        }
-      }).catch((code) => {
-
-      })
-    },
-    //根据城市id获取面积
-    getCityTotalPrice() {
-      let params = this.api.getParam('mj1', {ctid: this.ctid})
-      this.api.postData(this, params).then((res) => {
-        if (res.code === 0) {
-          window.localStorage.setItem('mjList',  JSON.stringify(res.data))
-        } else {
-
-        }
-      }).catch((code) => {
-
-      })
-    },
+    }
   }
 }
 </script>

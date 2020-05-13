@@ -52,6 +52,11 @@ export default new Router({
       name: 'newshouse',
       component: newshouse
     },
+    {//百房新闻详情
+      path: '/news/detail/:id',
+      name: 'newsDetail',
+      component: resolve => require(['@/pages/newsDetail.vue'], resolve),
+    },
     {//百房视频
       path: '/videohouse',
       name: 'videohouse',
